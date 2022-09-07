@@ -36,6 +36,10 @@ end
 group :test do
   gem 'climate_control'
   gem 'shoulda-matchers'
+  # test coverage
+  gem 'simplecov', require: false
 end
 
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'money-rails', '~> 1.15'
+gem 'active_model_serializers', '~> 0.10.0'

@@ -21,14 +21,10 @@
 #  index_accounts_on_phone_number  (phone_number)
 #  index_accounts_on_status        (status)
 #
-FactoryBot.define do
-  factory :account do
-    first_name { Faker::Name.first_name }
-    last_name { Faker::Name.last_name }
-    email { Faker::Internet.email }
-    phone_number { Faker::PhoneNumber.cell_phone_in_e164 }
-    balance_cents { 100 }
+class AccountSerializer < ActiveModel::Serializer
+  attributes :id, :email, :first_name, :last_name, :phone_number, :status
 
-    status { 0 }
+  attribute :balance do
+    "#{object.balance_cents} #{object.balance_currency}"
   end
 end
