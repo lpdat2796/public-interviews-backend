@@ -27,7 +27,7 @@ FactoryBot.define do
     last_name { Faker::Name.last_name }
     email { Faker::Internet.email }
     phone_number { Faker::PhoneNumber.cell_phone_in_e164 }
-    balance_cents { 100 }
+    balance { 100 }
 
     status { 0 }
   end

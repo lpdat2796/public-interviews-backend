@@ -11,21 +11,21 @@ class NewTransactionForm
 
   def save
     # @transaction
-    sender_balance = sender.balance_cents
-    amount = transaction_attributes[:amount_cents].to_i
+    sender_balance = sender.balance
+    amount = Money.from_amount(transaction_attributes[:amount].to_f, 'USD')
     transaction.assign_attributes(transaction_attributes)
     ActiveRecord::Base.transaction do
       case transaction_attributes[:transaction_type]
       when 'inbound', 'outbound'
         raise ActionController::ParameterMissing.new(params: 'receiver') if receiver.nil?
         transaction.receiver = receiver
-        receiver_balance = receiver.balance_cents
-        sender.update!(balance_cents: sender_balance - amount)
-        receiver.update!(balance_cents: receiver_balance + amount)
+        receiver_balance = receiver.balance
+        sender.update!(balance: sender_balance - amount)
+        receiver.update!(balance: receiver_balance + amount)
       when 'withdraw'
-        sender.update!(balance_cents: sender_balance - amount)
+        sender.update!(balance: sender_balance - amount)
       when 'deposit'
-        sender.update!(balance_cents: sender_balance + amount)
+        sender.update!(balance: sender_balance + amount)
       end
 
       transaction.status = :succeed

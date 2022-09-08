@@ -1,0 +1,598 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Mamo swagger",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:3005/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Account",
+      "description": "Operations about Account"
+    },
+    {
+      "name": "Transaction",
+      "description": "Operations about transaction"
+    }
+  ],
+  "paths": {
+    "/accounts": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Create account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "firstName": "Dat",
+                  "lastName": "Le",
+                  "email": "lpdat2796@gmail.com",
+                  "phoneNumber": "0912345678"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "example-0": {
+                    "summary": "Create account",
+                    "value": {
+                      "status": "success",
+                      "data": {
+                        "id": 7,
+                        "email": "lpdat2796@gmail.com",
+                        "first_name": "Dat",
+                        "last_name": "Le",
+                        "phone_number": "0912345678",
+                        "status": "pending",
+                        "balance": "$0.00"
+                      }
+                    }
+                  },
+                  "example-1": {
+                    "summary": "Create account failed",
+                    "value": {
+                      "status": 401,
+                      "message": [
+                        "Email has already been taken",
+                        "Phone number has already been taken"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/1": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get account",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "id": 1,
+                    "email": "lpdat2796@gmail.com",
+                    "first_name": "Dat",
+                    "last_name": "Le",
+                    "phone_number": "0912345678",
+                    "status": "pending",
+                    "balance": "$0.00"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Unverified account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "status": "unverified"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "id": 1,
+                    "email": "lpdat2796@gmail.com",
+                    "first_name": "Dat",
+                    "last_name": "Le",
+                    "phone_number": "0912345678",
+                    "status": "unverified",
+                    "balance": "$0.00"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/2": {
+      "put": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Verified account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "status": "verified"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "id": 1,
+                    "email": "lpdat@gmail.com",
+                    "first_name": "Dat",
+                    "last_name": "Le",
+                    "phone_number": "0922345678",
+                    "status": "verified",
+                    "balance": "$10.00"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/1/transactions": {
+      "post": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Withdraw",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "transactionType": "withdraw",
+                  "amount": 10.5,
+                  "receiver": null
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "example-0": {
+                    "summary": "Withdraw failed",
+                    "value": {
+                      "status": 401,
+                      "message": [
+                        "Validation failed: Balance cents must be greater than or equal to 0"
+                      ]
+                    }
+                  },
+                  "example-1": {
+                    "summary": "Withdraw",
+                    "value": {
+                      "status": "success",
+                      "data": {
+                        "id": 58,
+                        "message": null,
+                        "transaction_type": "withdraw",
+                        "status": "succeed",
+                        "amount": "$10.50",
+                        "sender": {
+                          "id": 1,
+                          "email": "lpdat2796@gmail.com",
+                          "first_name": "Dat",
+                          "last_name": "Le",
+                          "phone_number": "0912345678",
+                          "status": "verified",
+                          "balance": "$479.00"
+                        },
+                        "receiver": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "List transactions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "example-0": {
+                    "summary": "List transactions without filter",
+                    "value": {
+                      "status": "success",
+                      "data": [
+                        {
+                          "id": 55,
+                          "message": null,
+                          "transaction_type": "deposit",
+                          "status": "succeed",
+                          "amount": "$500.00",
+                          "sender": {
+                            "id": 1,
+                            "email": "lpdat2796@gmail.com",
+                            "first_name": "Dat",
+                            "last_name": "Le",
+                            "phone_number": "0912345678",
+                            "status": "verified",
+                            "balance": "$423.80"
+                          },
+                          "receiver": null
+                        },
+                        {
+                          "id": 56,
+                          "message": null,
+                          "transaction_type": "withdraw",
+                          "status": "succeed",
+                          "amount": "$10.50",
+                          "sender": {
+                            "id": 1,
+                            "email": "lpdat2796@gmail.com",
+                            "first_name": "Dat",
+                            "last_name": "Le",
+                            "phone_number": "0912345678",
+                            "status": "verified",
+                            "balance": "$423.80"
+                          },
+                          "receiver": null
+                        },
+                        {
+                          "id": 57,
+                          "message": "Validation failed: Balance cents must be greater than or equal to 0",
+                          "transaction_type": "withdraw",
+                          "status": "failed",
+                          "amount": "$100,000.00",
+                          "sender": {
+                            "id": 1,
+                            "email": "lpdat2796@gmail.com",
+                            "first_name": "Dat",
+                            "last_name": "Le",
+                            "phone_number": "0912345678",
+                            "status": "verified",
+                            "balance": "$423.80"
+                          },
+                          "receiver": null
+                        },
+                        {
+                          "id": 58,
+                          "message": null,
+                          "transaction_type": "withdraw",
+                          "status": "succeed",
+                          "amount": "$10.50",
+                          "sender": {
+                            "id": 1,
+                            "email": "lpdat2796@gmail.com",
+                            "first_name": "Dat",
+                            "last_name": "Le",
+                            "phone_number": "0912345678",
+                            "status": "verified",
+                            "balance": "$423.80"
+                          },
+                          "receiver": null
+                        },
+                        {
+                          "id": 59,
+                          "message": null,
+                          "transaction_type": "inbound",
+                          "status": "succeed",
+                          "amount": "$55.20",
+                          "sender": {
+                            "id": 1,
+                            "email": "lpdat2796@gmail.com",
+                            "first_name": "Dat",
+                            "last_name": "Le",
+                            "phone_number": "0912345678",
+                            "status": "verified",
+                            "balance": "$423.80"
+                          },
+                          "receiver": {
+                            "id": 2,
+                            "email": "lpdat@gmail.com",
+                            "first_name": "Dat",
+                            "last_name": "Le",
+                            "phone_number": "09112345678",
+                            "status": "verified",
+                            "balance": "$55.20"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "example-1": {
+                    "summary": "List transactions with filter",
+                    "value": {
+                      "status": "success",
+                      "data": [
+                        {
+                          "id": 55,
+                          "message": null,
+                          "transaction_type": "deposit",
+                          "status": "succeed",
+                          "amount": "$500.00",
+                          "sender": {
+                            "id": 1,
+                            "email": "lpdat2796@gmail.com",
+                            "first_name": "Dat",
+                            "last_name": "Le",
+                            "phone_number": "0912345678",
+                            "status": "verified",
+                            "balance": "$423.80"
+                          },
+                          "receiver": null
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/4/transactions": {
+      "post": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Inbound/ Outbound",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "transactionType": "inbound",
+                  "amount": 55.2,
+                  "receiver": "lpdat@gmail.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "example-0": {
+                    "summary": "Accounts are not verified",
+                    "value": {
+                      "status": 403,
+                      "message": "You do not have authorized"
+                    }
+                  },
+                  "example-1": {
+                    "summary": "Inbound/ Outbound",
+                    "value": {
+                      "status": "success",
+                      "data": {
+                        "id": 59,
+                        "message": null,
+                        "transaction_type": "inbound",
+                        "status": "succeed",
+                        "amount": "$55.20",
+                        "sender": {
+                          "id": 4,
+                          "email": "lpdat3796@gmail.com",
+                          "first_name": "Dat",
+                          "last_name": "Le",
+                          "phone_number": "0932345678",
+                          "status": "verified",
+                          "balance": "$423.80"
+                        },
+                        "receiver": {
+                          "id": 2,
+                          "email": "lpdat@gmail.com",
+                          "first_name": "Dat",
+                          "last_name": "Le",
+                          "phone_number": "09112345678",
+                          "status": "verified",
+                          "balance": "$55.20"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/2/transactions": {
+      "post": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Deposit",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "transactionType": "deposit",
+                  "amount": 55.2,
+                  "receiver": "lpdat@gmail.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "example-0": {
+                    "summary": "Accounts are not verified",
+                    "value": {
+                      "status": 403,
+                      "message": "You do not have authorized"
+                    }
+                  },
+                  "example-1": {
+                    "summary": "Deposit",
+                    "value": {
+                      "status": "success",
+                      "data": {
+                        "id": 59,
+                        "message": null,
+                        "transaction_type": "inbound",
+                        "status": "succeed",
+                        "amount": "$55.20",
+                        "sender": {
+                          "id": 2,
+                          "email": "lpdat@gmail.com",
+                          "first_name": "Dat",
+                          "last_name": "Le",
+                          "phone_number": "09112345678",
+                          "status": "verified",
+                          "balance": "$423.80"
+                        },
+                        "receiver": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/1/transactions/55": {
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Detail transaction",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "id": 55,
+                    "message": null,
+                    "transaction_type": "deposit",
+                    "status": "succeed",
+                    "amount": "$500.00",
+                    "sender": {
+                      "id": 1,
+                      "email": "lpdat2796@gmail.com",
+                      "first_name": "Dat",
+                      "last_name": "Le",
+                      "phone_number": "0912345678",
+                      "status": "verified",
+                      "balance": "$423.80"
+                    },
+                    "receiver": null
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

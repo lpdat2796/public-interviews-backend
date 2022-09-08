@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::TransactionsController, type: :request do
-  let!(:account) { create(:account, status: status) }
+  let!(:account) { create(:account, status: status, balance: 50) }
   let!(:transaction) { create(:transaction, sender: account) }
   let(:status) { 'verified' }
 
@@ -21,13 +21,13 @@ RSpec.describe Api::V1::TransactionsController, type: :request do
         expect(body['data'][0]['message']).to be_nil
         expect(body['data'][0]['transaction_type']).to eq(transaction.transaction_type)
         expect(body['data'][0]['status']).to eq(transaction.status)
-        expect(body['data'][0]['amount']).to eq("#{transaction.amount_cents} #{transaction.amount_currency}")
+        expect(body['data'][0]['amount']).to eq(transaction.amount.format)
       end
     end
 
     context 'with filter params' do
       let(:params) { { transaction_type: 'withdraw' } }
-      let!(:transaction_2) { create(:transaction, sender: account, transaction_type: 'withdraw', amount_cents: 50, status: 'failed') }
+      let!(:transaction_2) { create(:transaction, sender: account, transaction_type: 'withdraw', amount: 50, status: 'failed') }
 
       it "returns list transaction" do
         subject
@@ -39,7 +39,7 @@ RSpec.describe Api::V1::TransactionsController, type: :request do
         expect(body['data'][0]['message']).to be_nil
         expect(body['data'][0]['transaction_type']).to eq('withdraw')
         expect(body['data'][0]['status']).to eq('failed')
-        expect(body['data'][0]['amount']).to eq('50 USD')
+        expect(body['data'][0]['amount']).to eq(transaction_2.amount.format)
       end
     end
   end
@@ -55,7 +55,7 @@ RSpec.describe Api::V1::TransactionsController, type: :request do
       expect(body['data']['message']).to be_nil
       expect(body['data']['transaction_type']).to eq(transaction.transaction_type)
       expect(body['data']['status']).to eq(transaction.status)
-      expect(body['data']['amount']).to eq("#{transaction.amount_cents} #{transaction.amount_currency}")
+      expect(body['data']['amount']).to eq(transaction.amount.format)
     end
   end
 
@@ -66,7 +66,7 @@ RSpec.describe Api::V1::TransactionsController, type: :request do
     let(:params) do
       {
         transaction_type: 'inbound',
-        amount_cents: 50,
+        amount: 50,
         message: 'message',
         receiver: account2.email
       }
@@ -79,7 +79,7 @@ RSpec.describe Api::V1::TransactionsController, type: :request do
         expect(body['data']['message']).to eq('message')
         expect(body['data']['transaction_type']).to eq('inbound')
         expect(body['data']['status']).to eq('succeed')
-        expect(body['data']['amount']).to eq("50 USD")
+        expect(body['data']['amount']).to eq("$50.00")
       end
     end
 
@@ -106,7 +106,7 @@ RSpec.describe Api::V1::TransactionsController, type: :request do
     end
 
     context 'when balance of account sender is not enough' do
-      before { account.update(balance_cents: 0) }
+      before { account.update(balance: 0) }
 
       it 'creates new transaction with status failed' do
         subject

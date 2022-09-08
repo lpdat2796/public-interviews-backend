@@ -18,7 +18,7 @@ FactoryBot.define do
     association :sender, factory: :account
     association :receiver, factory: :account
 
-    amount_cents { 100 }
+    amount { 100 }
     transaction_type { 'deposit' }
   end
 end

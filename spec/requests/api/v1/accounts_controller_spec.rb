@@ -16,7 +16,7 @@ RSpec.describe Api::V1::AccountsController, type: :request do
         last_name: account.last_name,
         phone_number: account.phone_number,
         status: account.status,
-        balance: "#{account.balance_cents} #{account.balance_currency}"
+        balance: account.balance.format
       }
     end
 
@@ -51,7 +51,7 @@ RSpec.describe Api::V1::AccountsController, type: :request do
         expect(body['data']['last_name']).to eq('Le')
         expect(body['data']['phone_number']).to eq('0123456789')
         expect(body['data']['status']).to eq('pending')
-        expect(body['data']['balance']).to eq('0 USD')
+        expect(body['data']['balance']).to eq('$0.00')
       end
     end
 
@@ -69,7 +69,7 @@ RSpec.describe Api::V1::AccountsController, type: :request do
         expect { subject }.not_to change { Account.count }
         
         body = JSON.parse(response.body)
-        expect(body['status']).to eq(400)
+        expect(body['status']).to eq(401)
         expect(body['message']).to eq(['Email has already been taken'])
       end
     end

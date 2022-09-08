@@ -25,6 +25,6 @@ class AccountSerializer < ActiveModel::Serializer
   attributes :id, :email, :first_name, :last_name, :phone_number, :status
 
   attribute :balance do
-    "#{object.balance_cents} #{object.balance_currency}"
+    object.balance.format
   end
 end

@@ -47,7 +47,7 @@ class Api::V1::TransactionsController < ApplicationController
   private
 
   def transaction_params
-    params.permit(:receiver, :transaction_type, :amount_cents, :message)
+    params.permit(:receiver, :transaction_type, :amount, :message)
   end
 
   def set_transaction

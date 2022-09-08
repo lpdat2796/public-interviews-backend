@@ -17,7 +17,7 @@ class TransactionSerializer < ActiveModel::Serializer
   attributes :id, :message, :transaction_type, :status
 
   attribute :amount do
-    "#{object.amount_cents} #{object.amount_currency}"
+    object.amount.format
   end
 
   belongs_to :sender
