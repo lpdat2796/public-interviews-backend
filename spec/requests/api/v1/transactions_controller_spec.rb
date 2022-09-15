@@ -111,7 +111,7 @@ RSpec.describe Api::V1::TransactionsController, type: :request do
       it 'creates new transaction with status failed' do
         subject
         body = JSON.parse(response.body)
-        expect(body['status']).to eq(401)
+        expect(body['status']).to eq(400)
         expect(body['message']).to eq(["Validation failed: Balance cents must be greater than or equal to 0"])
       end
     end

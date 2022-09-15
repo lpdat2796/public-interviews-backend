@@ -40,7 +40,7 @@ class Api::V1::TransactionsController < ApplicationController
         each_serializer: TransactionSerializer
       )
     else
-      render json: { status: 401, message: @new_transaction_form.errors.full_messages }
+      render json: { status: 400, message: @new_transaction_form.errors.full_messages }
     end
   end
 
